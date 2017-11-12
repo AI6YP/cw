@@ -1,2 +1,4 @@
-# cw
-CW Key
+# CW Key
+
+  * Autimatic
+  * USB connected
