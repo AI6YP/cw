@@ -1,5 +1,7 @@
 # CW Key
 
+[Morse code](https://en.wikipedia.org/wiki/Morse_code) computer input interface.
+
 ## Features
 
   * Autimatic
