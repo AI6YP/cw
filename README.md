@@ -7,4 +7,8 @@
   * PTT key
   * Capacitive touch paddle ENIG (Electroless Nickel Immersion Gold) finish
   * https://hackaday.io/project/19129-tiny-cw-capacitive-touch-paddle
+  * Rotary encoder
+    - speed
+    - volume
+    - VFO
 
