@@ -4,3 +4,4 @@
   * USB connected
   * [Makey Makey](https://github.com/sparkfun/MaKeyMaKey)
   * Browser JS
+  * PTT key
