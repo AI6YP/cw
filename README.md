@@ -4,7 +4,7 @@
 
 ## Features
 
-  * Autimatic
+  * Autimatic timing
   * USB [HID](https://en.wikipedia.org/wiki/USB_human_interface_device_class) interface
   * [Makey Makey](https://github.com/sparkfun/MaKeyMaKey)
   * Browser JS
