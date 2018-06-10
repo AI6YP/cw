@@ -16,3 +16,7 @@
     - volume
     - VFO
 
+  * http://www.instructables.com/id/USB-Volume-Control-and-Caps-Lock-LED-Simple-Cheap-/
+  * https://github.com/mrdavidjwatts/USB-Volume-Control
+  * https://github.com/NicoHood/HID
+  * https://www.ebay.com/itm/362187355931
