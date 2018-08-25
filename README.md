@@ -20,3 +20,16 @@
   * https://github.com/mrdavidjwatts/USB-Volume-Control
   * https://github.com/NicoHood/HID
   * https://www.ebay.com/itm/362187355931
+
+
+## Interface
+
+### C232HM-DDHSL-0
+
+Red     Vcc     3.3v
+Orange  TCK     SWCLK
+Yellow  TDI     (SWDIO -- 470)
+Green   TDO     SWDIO
+Brown   TMS
+...
+Black   GND     GND
