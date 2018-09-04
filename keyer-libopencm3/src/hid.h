@@ -1,6 +1,14 @@
 #include <libopencm3/usb/usbd.h>
 #include <libopencm3/usb/hid.h>
 
+/* Define this to include the DFU APP interface. */
+#define INCLUDE_DFU_INTERFACE
+
+#ifdef INCLUDE_DFU_INTERFACE
+#include <libopencm3/cm3/scb.h>
+#include <libopencm3/usb/dfu.h>
+#endif
+
 const struct usb_device_descriptor dev_descr = {
     .bLength = USB_DT_DEVICE_SIZE,
     .bDescriptorType = USB_DT_DEVICE,
@@ -20,7 +28,10 @@ const struct usb_device_descriptor dev_descr = {
 
 static const uint8_t hid_report_descriptor[] = {
     0x05, 0x01, /* USAGE_PAGE (Generic Desktop)         */
-    0x09, 0x02, /* USAGE (Mouse)                        */
+
+    // 0x09, 0x02, /* USAGE (Mouse)                        */
+    0x09, 0x06, /* USAGE (Keyboard)                        */
+
     0xa1, 0x01, /* COLLECTION (Application)             */
     0x09, 0x01, /*   USAGE (Pointer)                    */
     0xa1, 0x00, /*   COLLECTION (Physical)              */
@@ -103,4 +114,63 @@ const struct usb_interface_descriptor hid_iface = {
 
     .extra = &hid_function,
     .extralen = sizeof(hid_function),
+};
+
+#ifdef INCLUDE_DFU_INTERFACE
+const struct usb_dfu_descriptor dfu_function = {
+  .bLength = sizeof(struct usb_dfu_descriptor),
+  .bDescriptorType = DFU_FUNCTIONAL,
+  .bmAttributes = USB_DFU_CAN_DOWNLOAD | USB_DFU_WILL_DETACH,
+  .wDetachTimeout = 255,
+  .wTransferSize = 1024,
+  .bcdDFUVersion = 0x011A,
+};
+
+const struct usb_interface_descriptor dfu_iface = {
+  .bLength = USB_DT_INTERFACE_SIZE,
+  .bDescriptorType = USB_DT_INTERFACE,
+  .bInterfaceNumber = 1,
+  .bAlternateSetting = 0,
+  .bNumEndpoints = 0,
+  .bInterfaceClass = 0xFE,
+  .bInterfaceSubClass = 1,
+  .bInterfaceProtocol = 1,
+  .iInterface = 0,
+
+  .extra = &dfu_function,
+  .extralen = sizeof(dfu_function),
+};
+#endif
+
+const struct usb_interface ifaces[] = {{
+  .num_altsetting = 1,
+  .altsetting = &hid_iface,
+#ifdef INCLUDE_DFU_INTERFACE
+}, {
+  .num_altsetting = 1,
+  .altsetting = &dfu_iface,
+#endif
+}};
+
+const struct usb_config_descriptor config = {
+  .bLength = USB_DT_CONFIGURATION_SIZE,
+  .bDescriptorType = USB_DT_CONFIGURATION,
+  .wTotalLength = 0,
+#ifdef INCLUDE_DFU_INTERFACE
+  .bNumInterfaces = 2,
+#else
+  .bNumInterfaces = 1,
+#endif
+  .bConfigurationValue = 1,
+  .iConfiguration = 0,
+  .bmAttributes = 0xC0,
+  .bMaxPower = 0x32,
+
+  .interface = ifaces,
+};
+
+static const char *usb_strings[] = {
+  "Drom Labs",
+  "Pluton Keyer",
+  "42",
 };
