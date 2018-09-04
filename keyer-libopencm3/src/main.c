@@ -3,11 +3,18 @@
 #include <libopencm3/cm3/systick.h>
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
+#include <libopencm3/stm32/exti.h>
+
 #include <libopencm3/usb/usbd.h>
 #include <libopencm3/usb/hid.h>
 #include "hid.h"
 
 static usbd_device *usbd_dev;
+
+#define FALLING 0
+#define RISING 1
+
+uint16_t exti_direction = FALLING;
 
 /* Buffer to be used for control requests. */
 uint8_t usbd_control_buffer[128];
@@ -99,9 +106,9 @@ static void hid_set_config(usbd_device *dev, uint16_t wValue) {
 
     systick_set_clocksource(STK_CSR_CLKSOURCE_AHB_DIV8);
     /* SysTick interrupt every N clock pulses: set reload to N-1 */
-    systick_set_reload(99999);
-    systick_interrupt_enable();
-    systick_counter_enable();
+    // systick_set_reload(99999);
+    // systick_interrupt_enable();
+    // systick_counter_enable();
 }
 
 static void gpio_setup(void) {
@@ -143,8 +150,61 @@ static void gpio_setup(void) {
 
 }
 
+static void exti_setup(void)
+{
+    /* Enable GPIOA clock. */
+    rcc_periph_clock_enable(RCC_GPIOA);
+
+    /* Enable AFIO clock. */
+    rcc_periph_clock_enable(RCC_AFIO);
+
+    /* Enable EXTI0 interrupt. */
+    nvic_enable_irq(NVIC_EXTI0_IRQ);
+
+    /* Set PA0 to 'input float'. */
+    gpio_set_mode(
+        GPIOA,
+        GPIO_MODE_INPUT,
+        GPIO_CNF_OUTPUT_OPENDRAIN,
+        GPIO0
+    );
+    /* Set PA3 to '0' */
+    gpio_set_mode(
+        GPIOA,
+        GPIO_MODE_OUTPUT_2_MHZ,
+        GPIO_CNF_OUTPUT_PUSHPULL,
+        GPIO3
+    );
+
+    /* Configure the EXTI subsystem. */
+    exti_select_source(EXTI0, GPIOA);
+    exti_direction = FALLING;
+    exti_set_trigger(EXTI0, EXTI_TRIGGER_FALLING);
+    exti_enable_request(EXTI0);
+}
+
+void exti0_isr(void) {
+    exti_reset_request(EXTI0);
+
+    // TODO send keyboard report
+    // uint8_t buf[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    //
+    // usbd_ep_write_packet(usbd_dev, 0x81, buf, 4);
+
+    if (exti_direction == FALLING) {
+        gpio_set(GPIOC, GPIO13);
+        exti_direction = RISING;
+        exti_set_trigger(EXTI0, EXTI_TRIGGER_RISING);
+    } else {
+        gpio_clear(GPIOC, GPIO13);
+        exti_direction = FALLING;
+        exti_set_trigger(EXTI0, EXTI_TRIGGER_FALLING);
+    }
+}
+
 int main (void) {
     gpio_setup();
+    exti_setup();
 
     usbd_dev = usbd_init(
         &st_usbfs_v1_usb_driver,
