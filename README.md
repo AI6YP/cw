@@ -11,11 +11,14 @@
   * PTT key
   * Capacitive touch paddle ENIG (Electroless Nickel Immersion Gold) finish
   * https://hackaday.io/project/19129-tiny-cw-capacitive-touch-paddle
-  * Rotary encoder
+
+* Rotary encoder
     - speed
     - volume
     - VFO
-
+    - [400pulse](https://www.aliexpress.com/item/Free-Shipping-1pcx-Incremental-optical-rotary-encoder-400-pulse/1212996005.html)
+  * Remote VFO
+  
   * http://www.instructables.com/id/USB-Volume-Control-and-Caps-Lock-LED-Simple-Cheap-/
   * https://github.com/mrdavidjwatts/USB-Volume-Control
   * https://github.com/NicoHood/HID
