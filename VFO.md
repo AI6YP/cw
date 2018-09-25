@@ -1,9 +1,8 @@
 
 ## [400](https://www.aliexpress.com/item/Free-Shipping-1pcx-Incremental-optical-rotary-encoder-400-pulse/1212996005.html) - $12
 
-  * 400P
-  * AB two-phase.
-  * 5-24V
+## [1000](https://www.aliexpress.com/item/Photoelectric-rotary-encoder-1000-pulse-1000-line-AB-two-phase-5-24V-with-coupling-1000P-R/32823981111.html) - $26
+
   * body size: Ø 38mm
   * shaft Ø 6 x 13mm
   * axis platform: hight 5mm Ø 20 mm
@@ -15,5 +14,4 @@
     - white = B-phase
     - shielded cable.
    
-   ## [1000](https://www.aliexpress.com/item/Photoelectric-rotary-encoder-1000-pulse-1000-line-AB-two-phase-5-24V-with-coupling-1000P-R/32823981111.html) - $26
    
